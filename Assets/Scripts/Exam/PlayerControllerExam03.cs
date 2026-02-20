@@ -14,6 +14,8 @@ public class PlayerControllerExam03 : MonoBehaviour
     private InputAction moveAction;
     private InputAction shootAction;
 
+    private float nextFireTime = 0f;
+
     private void Awake()
     {
         moveAction = InputSystem.actions.FindAction("Move");
@@ -38,6 +40,21 @@ public class PlayerControllerExam03 : MonoBehaviour
         if (shootAction.triggered)
         {
             Instantiate(projectilePrefab, transform.position, transform.rotation);
+        }
+
+        if (shootAction.triggered)
+        {
+            FireProjectile();
+        }
+        if (enableAutoFireMode && Time.time >= nextFireTime)
+        {
+            FireProjectile();
+            nextFireTime = Time.time + autoFireInterval;
+        }
+
+        void FireProjectile()
+        {
+            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
         }
     }
 }
